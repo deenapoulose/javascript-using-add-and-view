@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ADD AND VIEW</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	
+</head>
+<style>
+tr:hover {
+    background: red;
+}
+body {
+   
+    background-color:#F8F9F9 ;
+}
+cel16.innerHTML ='<a>Delete</a>';
+  .container{
+   margin-top: 25px;
+  }
+  h1 {text-align: center;}
+  table{ margin-top: 25px;}
+</style>
+<body>
+<h1>Empolyee Details</h1>
+<center>
+<div class="container">
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addmodal">ADD</button>
+  <!-- <button type="button" class="btn btn-success  data-toggle="modal"  data-target="#addmodal">ADD</button> -->
+ </div>
+</center>
+
+	<center>
+		
+		</table>
+
+		<table border="4" id="show">
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th>Empid</th>
+                    <th>Phone</th>
+                    <!-- <th>Action</th> -->
+				</tr>
+			</thead>
+		</table>
+		
+	</center>
+	<div class="modal" id="addmodal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ADD EMP DETAILS</h5>
+        <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	
+      <div class="modal-body">
+        
+                     	   <div class="form-group"  >
+                     	   <label>Fisrt Name</label>  
+                       <input type="text" name="fname" id="fname" class="form-control">
+                          <br /> 
+						  </div>
+                          <div class="form-group"  >
+                     	   <label>Last Name</label>  
+                        <input type="text" name="lname" id="lname" class="form-control"/>  
+                          <br /> </div>
+                          <div class="form-group"  >
+                     	   <label>Emp Id</label>  
+                          <input type="text" name="id1" id="id1" class="form-control"/>  
+                          <br /> </div>
+                          <div class="form-group"  >
+                     	   <label>Email</label>  
+                         <input type="text" name="emfnamea" id="ema" class="form-control"/>  
+                          <br /> </div>
+                          <div class="form-group"  >
+                     	   <label>Mobile</label>  
+                          <input  type="text" name="phone" id="phone" class="form-control"/>  
+                          <br /> </div>
+                      </div>
+      <div class="modal-footer">
+	  <input type="button" name="button" id="btn" value="Add"  class="btn btn-primary " onclick="adddata()">
+		
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+			<script>
+            var arr=new Array();
+            
+			function adddata(){
+            var firstname=document.getElementById('fname').value;
+        
+		
+		var lastname=document.getElementById('lname').value;
+		var id1=document.getElementById('id1').value;
+		var ema=document.getElementById('ema').value;
+		var phone=document.getElementById('phone').value;
+		
+	    var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+         var phoneno = /^\d{10}$/;
+		 if ( firstname== "" || lastname=="" || id1=="" || ema=="" || phone=="" ) {
+			alert("all fields must be filled out");
+   
+		}
+		else if(!/^[a-zA-Z]*$/g.test(firstname)) {
+			alert("first name  contane Invalid characters");
+       
+		}
+		else if(!/^[a-zA-Z]*$/g.test(lastname)) {
+			alert("last name containe Invalid characters");
+       
+		}
+	
+		else if(! mailformat.test(ema)) {
+			alert("please update valid mail");
+       
+		}
+		else if(!phoneno.test(phone) ) {
+			alert("please update valid phone");
+       
+		}
+		else if(! phoneno.length==10 ) {
+			alert("please update valid phone");
+       
+		}
+		else{
+			 getdata();
+			 arr.push({
+			      fname:document.getElementById('fname').value,
+			      lname:document.getElementById('lname').value,
+			      ema:document.getElementById('ema').value,
+			      id1:document.getElementById('id1').value,
+                  phone:document.getElementById('phone').value,
+              
+				 
+			 
+			 });
+			  localStorage.setItem("localData",JSON.stringify(arr));
+			  showdata();
+			  }
+			
+			}
+			function getdata(){
+			var str=localStorage.getItem("localData");
+			if(str != null)
+			    arr=JSON.parse(str);
+			
+			
+			}
+		
+			function showdata(){
+			getdata();
+			
+			  var AddRown = document.getElementById('show');
+			  var  m =AddRown.rows.length;
+			  while(--m){
+				AddRown.deleteRow(m);
+			  }
+			  for (i=0;i<arr.length;i++){
+				var NewRow = AddRown.insertRow(1);
+
+				
+
+				var cel1 = NewRow.insertCell(0);
+				var cel2 = NewRow.insertCell(1);
+				var cel3 = NewRow.insertCell(2);
+				var cel4 = NewRow.insertCell(3);
+                var cel5 = NewRow.insertCell(4);
+                // var cel6 = NewRow.insertCell(5);
+                
+
+				cel1.innerHTML = arr[i].fname;
+				cel2.innerHTML = arr[i].lname;
+				cel3.innerHTML = arr[i].ema;
+				cel4.innerHTML = arr[i].id1;
+                cel5.innerHTML = arr[i].phone;
+                // var btn = document.createElement("button");
+                // btn.innerHTML = "Delete";
+                // btn.className = 'btn btn-danger deltbtn';
+                // btn.onclick = function (){
+                //     deldata();
+
+                // }
+
+                // cel6.append(btn);  
+                
+                document.getElementById('fname').value="";
+                document.getElementById('lname').value="";
+                document.getElementById('ema').value="";
+                document.getElementById('id1').value="";
+                document.getElementById('phone').value="";
+			
+				$('#addmodal').modal('hide');
+
+				
+			}
+			
+			}
+			
+			</script>
+	
+	<script>
+	
+		 showdata();
+		
+        </script>
+
+
+</body>
+</html>
