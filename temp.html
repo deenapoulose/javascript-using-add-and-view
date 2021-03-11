@@ -53,6 +53,50 @@ cel16.innerHTML ='<a>Delete</a>';
 		</table>
 		
 	</center>
+	<div class="modal" id="editmodal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title">EDIT EMP DETAILS</h5>
+			  <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+		  
+			<div class="modal-body">
+				<input type="hidden" name="id12" id="id12" class="form-control">
+			  
+								  <div class="form-group"  >
+								  <label>Fisrt Name</label>  
+							 <input type="text" name="fname1" id="fname1" class="form-control">
+								<br /> 
+								</div>
+								<div class="form-group"  >
+								  <label>Last Name</label>  
+							  <input type="text" name="lname1" id="lname1" class="form-control"/>  
+								<br /> </div>
+								<div class="form-group"  >
+								  <label>Emp Id</label>  
+								<input type="text" name="id11" id="id11" class="form-control"/>  
+								<br /> </div>
+								<div class="form-group"  >
+								  <label>Email</label>  
+							   <input type="text" name="ema1" id="ema1" class="form-control"/>  
+								<br /> </div>
+								<div class="form-group"  >
+								  <label>Mobile</label>  
+								<input  type="text" name="phone1" id="phone1" class="form-control"/>  
+								<br /> </div>
+							</div>
+			<div class="modal-footer">
+			<input type="button" name="button" id="btn1" value="Edit"  class="btn btn-info " onclick="editdata()">
+			  
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
 	<div class="modal" id="addmodal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -64,6 +108,8 @@ cel16.innerHTML ='<a>Delete</a>';
       </div>
 	
       <div class="modal-body">
+		
+
         
                      	   <div class="form-group"  >
                      	   <label>Fisrt Name</label>  
@@ -74,9 +120,9 @@ cel16.innerHTML ='<a>Delete</a>';
                      	   <label>Last Name</label>  
                         <input type="text" name="lname" id="lname" class="form-control"/>  
                           <br /> </div>
-                          <div class="form-group"  >
-                     	   <label>Emp Id</label>  
-                          <input type="text" name="id1" id="id1" class="form-control"/>  
+						  <div class="form-group"  >
+                     	   <label>Empid</label>  
+                        <input type="text" name="id1" id="id1" class="form-control"/>  
                           <br /> </div>
                           <div class="form-group"  >
                      	   <label>Email</label>  
@@ -202,10 +248,61 @@ cel16.innerHTML ='<a>Delete</a>';
                 btn.onclick = function (){
                     deldata();
 
-                 }
+				 }
+				 var btn1= document.createElement("button");
+                btn1.innerHTML = "Edit";
+                btn1.className = 'btn btn-success ';
+                btn1.onclick = function (){
+			   $("#editmodal").modal('toggle');
+			   var rowId = event.target.parentNode.parentNode.id;
+			   //alert(rowId);
+			   var Data = JSON.parse(localStorage.getItem("localData"));
+			   let newData = Data.filter(function (id,index) {
+			
+			return index == rowId;
+
+		  });
+		  console.log(newData);
+		  document.getElementById('id12').value=rowId;
+		  var len = newData.length;
+		for(var i = 0; i<len; i++)
+			{  
+ 			for(var key in newData[i])
+   			 {
+				   if(key === "fname")
+						{var le = (newData[i][key]);
+						document.getElementById('fname1').value=le;}
+					else if(key === "lname")
+					{
+						var le = (newData[i][key]);
+						document.getElementById('lname1').value=le;
+					}
+					else if(key === "ema")
+					{
+						var le = (newData[i][key]);
+						document.getElementById('ema1').value=le;
+					}
+					else if(key === "id1")
+					{
+						var le = (newData[i][key]);
+						document.getElementById('id11').value=le;
+					}
+					else if(key === "phone")
+					{
+						var le = (newData[i][key]);
+						document.getElementById('phone1').value=le;
+					}
+    			}
+
+}
+                
+
+
+			   
+           };
 
                 cel6.append(btn);  
-                
+                cel6.append(btn1);
                 document.getElementById('fname').value="";
                 document.getElementById('lname').value="";
                 document.getElementById('ema').value="";
@@ -228,7 +325,64 @@ cel16.innerHTML ='<a>Delete</a>';
               });
             localStorage.setItem("localData", JSON.stringify(newData) );
             window.location.reload();
-        }
+		}
+		function editdata(){
+			var firstname=document.getElementById('fname1').value;
+        
+		
+		var lastname=document.getElementById('lname1').value;
+		var id1=document.getElementById('id11').value;
+		var ema=document.getElementById('ema1').value;
+		var phone=document.getElementById('phone1').value;
+		//console.log(firstname);
+		
+	    var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+         var phoneno = /^\d{10}$/;
+		 if ( firstname== "" || lastname=="" || id1=="" || ema=="" || phone=="" ) {
+			alert("all fields must be filled out");
+   
+		}
+		else if(!/^[a-zA-Z]*$/g.test(firstname)) {
+			alert("first name  contane Invalid characters");
+       
+		}
+		else if(!/^[a-zA-Z]*$/g.test(lastname)) {
+			alert("last name containe Invalid characters");
+       
+		}
+	
+		else if(! mailformat.test(ema)) {
+			alert("please update valid mail");
+       
+		}
+		else if(!phoneno.test(phone) ) {
+			alert("please update valid phone");
+       
+		}
+		else if(! phoneno.length==10 ) {
+			alert("please update valid phone");
+       
+		}
+		else{
+		 getdata();
+		 var editid =document.getElementById('id12').value
+		 for (i=0;i<arr.length;i++){
+			 if(i==editid){
+				arr[i].fname = firstname;
+				arr[i].lname = lastname;
+				arr[i].ema =  ema;
+				arr[i].id1 = id1;
+                arr[i].phone = phone;
+			 }
+		 }
+		localStorage.setItem("localData",JSON.stringify(arr));
+		window.location.reload();
+		
+			
+		 	}
+
+
+		}
 
 			
 			</script>
