@@ -47,7 +47,7 @@ cel16.innerHTML ='<a>Delete</a>';
 					<th>Email</th>
 					<th>Empid</th>
                     <th>Phone</th>
-                    <!-- <th>Action</th> -->
+                    <th>Action</th> 
 				</tr>
 			</thead>
 		</table>
@@ -138,6 +138,7 @@ cel16.innerHTML ='<a>Delete</a>';
 		else{
 			 getdata();
 			 arr.push({
+				
 			      fname:document.getElementById('fname').value,
 			      lname:document.getElementById('lname').value,
 			      ema:document.getElementById('ema').value,
@@ -147,7 +148,15 @@ cel16.innerHTML ='<a>Delete</a>';
 				 
 			 
 			 });
-			  localStorage.setItem("localData",JSON.stringify(arr));
+			 
+			 let np=arr.sort(function(a,b){
+				 return a.fname.localeCompare(b.fname);
+			
+
+
+			 });
+			 localStorage.setItem("localData",JSON.stringify(np));
+			  //localStorage.setItem("localData",JSON.stringify(arr));
 			  showdata();
 			  }
 			
@@ -170,7 +179,7 @@ cel16.innerHTML ='<a>Delete</a>';
 			  }
 			  for (i=0;i<arr.length;i++){
 				var NewRow = AddRown.insertRow(1);
-
+				NewRow.id = i;
 				
 
 				var cel1 = NewRow.insertCell(0);
@@ -178,7 +187,8 @@ cel16.innerHTML ='<a>Delete</a>';
 				var cel3 = NewRow.insertCell(2);
 				var cel4 = NewRow.insertCell(3);
                 var cel5 = NewRow.insertCell(4);
-                // var cel6 = NewRow.insertCell(5);
+				var cel6 = NewRow.insertCell(5);
+				//var cel1 = NewRow.insertCell(0)
                 
 
 				cel1.innerHTML = arr[i].fname;
@@ -186,15 +196,15 @@ cel16.innerHTML ='<a>Delete</a>';
 				cel3.innerHTML = arr[i].ema;
 				cel4.innerHTML = arr[i].id1;
                 cel5.innerHTML = arr[i].phone;
-                // var btn = document.createElement("button");
-                // btn.innerHTML = "Delete";
-                // btn.className = 'btn btn-danger deltbtn';
-                // btn.onclick = function (){
-                //     deldata();
+                var btn = document.createElement("button");
+                btn.innerHTML = "Delete";
+                btn.className = 'btn btn-danger deltbtn';
+                btn.onclick = function (){
+                    deldata();
 
-                // }
+                 }
 
-                // cel6.append(btn);  
+                cel6.append(btn);  
                 
                 document.getElementById('fname').value="";
                 document.getElementById('lname').value="";
@@ -208,6 +218,18 @@ cel16.innerHTML ='<a>Delete</a>';
 			}
 			
 			}
+			function deldata(){
+            var rowId = event.target.parentNode.parentNode.id;
+          
+            var Data = JSON.parse(localStorage.getItem("localData"));
+            let newData = Data.filter(function (id,index) {
+			
+                return index != rowId;
+              });
+            localStorage.setItem("localData", JSON.stringify(newData) );
+            window.location.reload();
+        }
+
 			
 			</script>
 	
